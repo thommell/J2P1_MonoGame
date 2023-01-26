@@ -63,6 +63,15 @@ namespace J2P12_CS_Intermediate_MonoGame
             // Makes it so u can't go through the border of the screen.
             playerPosition.Y = Math.Clamp(playerPosition.Y, halfSize, screenHeight - halfSize);
         }
+       
+        public void BulletShooting(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+
+            }
+        }
+
         public void SetPlayerSize()
         {
             halfSize = playerTexture.Width / 2 * imageScale;
