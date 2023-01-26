@@ -7,11 +7,12 @@ namespace J2P12_CS_Intermediate_MonoGame
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
+
         private SpriteBatch _spriteBatch;
 
-        
-
         Player player;
+
+        Enemy enemy;
 
         public Game1()
         {
@@ -23,18 +24,26 @@ namespace J2P12_CS_Intermediate_MonoGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            enemy = new Enemy();
 
             base.Initialize();
-            
+
         }
 
         protected override void LoadContent()
         {
-            player.sb = _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            player.sb = _spriteBatch;
             player.playerTexture = Content.Load<Texture2D>("playerImageRed");
-            
+
+            player.SetPlayerSize();
+
+            enemy.sb = _spriteBatch;
+
+
 
 
             // TODO: use this.Content to load your game content here
@@ -55,7 +64,13 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
+
+
             player.Draw();
+
+
+
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }

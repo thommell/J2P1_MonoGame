@@ -19,19 +19,20 @@ namespace J2P12_CS_Intermediate_MonoGame
 
         public Vector2 playerPosition;
 
+        public float halfSize;
+        public float imageScale = 0.0575f;
 
         // Screen Parameters
 
         public int screenWidth;
         public int screenHeight;
 
-
         public Player(Vector2 playerPosition, int screenWidth, int screenHeight)
         {
             this.playerPosition = playerPosition;
-            this.screenWidth = screenWidth; 
-            this.screenHeight = screenHeight;  
-
+            this.screenWidth = screenWidth;
+            this.screenHeight = screenHeight;
+            
         }
 
         public SpriteBatch sb;
@@ -44,7 +45,7 @@ namespace J2P12_CS_Intermediate_MonoGame
                 // Adds extra feature to 'Speed Up' when holding shift.
                 if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
                 {
-                    playerPosition.Y -= 5;
+                    playerPosition.Y -= 10;
                 }
                 playerPosition.Y -= 5;
 
@@ -53,26 +54,22 @@ namespace J2P12_CS_Intermediate_MonoGame
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
                 {
-                    playerPosition.Y += 5;
+                    playerPosition.Y += 10;
+                    
                 }
                 playerPosition.Y += 5;
+                
             }
-            // Makes it so u can't go through the border of the screen
-            if(playerPosition.Y <= 35)
-            {
-                playerPosition.Y = 35;
-            }
-            if (playerPosition.Y + playerTexture.Height / 2 * 0.0575f >= screenHeight)
-            {
-                playerPosition.Y = screenHeight - playerTexture.Height * 0.0575f / 2;
-            }
-            
+            // Makes it so u can't go through the border of the screen.
+            playerPosition.Y = Math.Clamp(playerPosition.Y, halfSize, screenHeight - halfSize);
+        }
+        public void SetPlayerSize()
+        {
+            halfSize = playerTexture.Width / 2 * imageScale;
         }
         public void Draw()
         {
-            sb.Draw(playerTexture, playerPosition, null, Color.White, 0f, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), 0.0575f, SpriteEffects.None, 0f);
+            sb.Draw(playerTexture, playerPosition, null, Color.White, 0f, new Vector2(playerTexture.Width / 2, playerTexture.Height / 2), imageScale, SpriteEffects.None, 0f);
         }
-
     }
-
 }
