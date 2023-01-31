@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace J2P12_CS_Intermediate_MonoGame
 {
@@ -9,10 +10,10 @@ namespace J2P12_CS_Intermediate_MonoGame
         private GraphicsDeviceManager _graphics;
 
         private SpriteBatch _spriteBatch;
-
         Player player;
-
         Enemy enemy;
+        public List<Bullet> bullets = new List<Bullet>();
+
 
         public Game1()
         {
@@ -28,6 +29,8 @@ namespace J2P12_CS_Intermediate_MonoGame
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             enemy = new Enemy();
 
+
+
             base.Initialize();
 
         }
@@ -42,9 +45,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             player.SetPlayerSize();
 
             enemy.sb = _spriteBatch;
-
-
-
+            //enemy.enemyTexture = Content.Load<Texture2D>("");
 
             // TODO: use this.Content to load your game content here
         }
@@ -54,6 +55,17 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your update logic here
 
             player.MovementUpdate(gameTime);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                Bullet bullet = new Bullet(player, Content.Load<Texture2D>("bullet"));
+                bullets.Add(bullet);
+            }
+
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.BulletUpdate(gameTime);
+            }
             base.Update(gameTime);
         }
 
@@ -67,6 +79,11 @@ namespace J2P12_CS_Intermediate_MonoGame
 
 
             player.Draw();
+
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.Draw(_spriteBatch);
+            }
 
 
 
