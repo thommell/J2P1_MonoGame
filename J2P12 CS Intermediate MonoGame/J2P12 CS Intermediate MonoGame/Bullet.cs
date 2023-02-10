@@ -44,7 +44,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             //    bulletPosition =  player.playerPosition;
             //}
                 
-            bulletPosition.X++;
+            bulletPosition.X++;//FEEDBACK: Waarschijnlijk wil je hier een soort van speed variable gebruiken om de Bullet sneller te laten vliegen
         }
 
         // Draw the bullets

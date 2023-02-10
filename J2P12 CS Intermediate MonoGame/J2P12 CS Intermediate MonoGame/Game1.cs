@@ -7,6 +7,9 @@ namespace J2P12_CS_Intermediate_MonoGame
 {
     public class Game1 : Game
     {
+        //FEEDBACK: Let op je Access Modifiers (private, protected, public).
+        // Als je em weg laat is het automatisch private, kies ervoor om OF altijd private weg te laten OF om altijd private ervoor te zetten
+        // private Fields hebben inconsistent prefix (_graphics heeft een underscore, player heeft geen prefix). Wees hier consistent in!
         private GraphicsDeviceManager _graphics;
 
         private SpriteBatch _spriteBatch;
@@ -78,6 +81,8 @@ namespace J2P12_CS_Intermediate_MonoGame
             _spriteBatch.Begin();
 
 
+            //FEEDBACK: Je zou hier ook de _spriteBatch kunnen meegeven, net zoals bij de bullet.Draw(...) functie hieronder
+            // Dan hoef je geen SpriteBatch Field te gebruiken in de Player class.
             player.Draw();
 
             foreach (Bullet bullet in bullets)
