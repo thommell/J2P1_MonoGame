@@ -17,7 +17,7 @@ namespace J2P12_CS_Intermediate_MonoGame
 
 
         public float bulletImageScale = 0.1f;
-
+        public float bulletSpeed = 5f;
 
         public Vector2 bulletPosition;
 
@@ -25,15 +25,15 @@ namespace J2P12_CS_Intermediate_MonoGame
 
 
 
-        // Bullet constructor
+        // Bullet constructor -- the vector2 basically makes the (new) bullet spawn on the player but just a bit in front.
         public Bullet(Player player, Texture2D texture)
         {
             this.player = player;
 
-            bulletPosition = player.playerPosition;
+            bulletPosition = new Vector2(player.playerPosition.X + player.playerTexture.Width / 20, player.playerPosition.Y);
+            
             bulletTexture = texture;
-        }
-
+        }        
 
         // Update bullets realtime
         public void BulletUpdate(GameTime gameTime)
@@ -43,8 +43,8 @@ namespace J2P12_CS_Intermediate_MonoGame
             //{
             //    bulletPosition =  player.playerPosition;
             //}
-                
-            bulletPosition.X++;
+
+            bulletPosition.X += bulletSpeed;
         }
 
         // Draw the bullets
