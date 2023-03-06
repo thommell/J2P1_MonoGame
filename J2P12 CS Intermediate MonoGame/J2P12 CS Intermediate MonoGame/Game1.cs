@@ -26,8 +26,12 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your initialization logic here
 
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+<<<<<<< Updated upstream
             enemy = new Enemy();
 
+=======
+            enemy = new Enemy(new Vector2(35, _graphics.PreferredBackBufferHeight / 2));
+>>>>>>> Stashed changes
             base.Initialize();
 
         }
@@ -42,9 +46,14 @@ namespace J2P12_CS_Intermediate_MonoGame
             player.SetPlayerSize();
 
             enemy.sb = _spriteBatch;
+<<<<<<< Updated upstream
 
 
 
+=======
+            enemy.enemyTexture = Content.Load<Texture2D>("enemy_ghost");
+            
+>>>>>>> Stashed changes
 
             // TODO: use this.Content to load your game content here
         }
@@ -54,6 +63,34 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your update logic here
 
             player.MovementUpdate(gameTime);
+<<<<<<< Updated upstream
+=======
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            shootingCooldown -= deltaTime;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && shootingCooldown <= 0f)
+            {
+                shootingCooldown = 0.5f;
+                Bullet bullet = new Bullet(player, Content.Load<Texture2D>("bullet"));
+                bullets.Add(bullet);
+                Debug.WriteLine("user has pressed space!");
+            }
+            
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.BulletUpdate(gameTime);
+                if (bullet.bulletPosition.X >= 850) // removes (game)object if the X-axis of ANY bullet goes above 850 OR is 850. 
+                {
+                    bulletsToRemove.Add(bullet);
+                }
+            }
+            // extra foreach loop to check if any bullet is in the bulletsToRemove list.
+            foreach (Bullet bullet in bulletsToRemove)
+            {
+                bullets.Remove(bullet);
+            }
+>>>>>>> Stashed changes
             base.Update(gameTime);
         }
 
@@ -67,6 +104,7 @@ namespace J2P12_CS_Intermediate_MonoGame
 
 
             player.Draw();
+            enemy.Draw();
 
 
 
