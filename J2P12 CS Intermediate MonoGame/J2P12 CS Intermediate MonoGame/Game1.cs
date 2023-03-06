@@ -1,24 +1,32 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace J2P12_CS_Intermediate_MonoGame
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-
+        public int i = 0;
         private SpriteBatch _spriteBatch;
-
         Player player;
-
         Enemy enemy;
+        public List<Bullet> bullets = new List<Bullet>();
+        public List<Bullet> bulletsToRemove = new List<Bullet>();
+        private float shootingCooldown = 0f;
+
+
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
         }
 
         protected override void Initialize()
@@ -26,12 +34,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your initialization logic here
 
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-<<<<<<< Updated upstream
             enemy = new Enemy();
-
-=======
-            enemy = new Enemy(new Vector2(35, _graphics.PreferredBackBufferHeight / 2));
->>>>>>> Stashed changes
             base.Initialize();
 
         }
@@ -46,14 +49,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             player.SetPlayerSize();
 
             enemy.sb = _spriteBatch;
-<<<<<<< Updated upstream
-
-
-
-=======
-            enemy.enemyTexture = Content.Load<Texture2D>("enemy_ghost");
-            
->>>>>>> Stashed changes
+            //enemy.enemyTexture = Content.Load<Texture2D>("");
 
             // TODO: use this.Content to load your game content here
         }
@@ -61,10 +57,7 @@ namespace J2P12_CS_Intermediate_MonoGame
         protected override void Update(GameTime gameTime)
         {
             // TODO: Add your update logic here
-
             player.MovementUpdate(gameTime);
-<<<<<<< Updated upstream
-=======
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             shootingCooldown -= deltaTime;
@@ -76,7 +69,7 @@ namespace J2P12_CS_Intermediate_MonoGame
                 bullets.Add(bullet);
                 Debug.WriteLine("user has pressed space!");
             }
-            
+
             foreach (Bullet bullet in bullets)
             {
                 bullet.BulletUpdate(gameTime);
@@ -90,8 +83,9 @@ namespace J2P12_CS_Intermediate_MonoGame
             {
                 bullets.Remove(bullet);
             }
->>>>>>> Stashed changes
             base.Update(gameTime);
+
+
         }
 
         protected override void Draw(GameTime gameTime)
@@ -102,12 +96,12 @@ namespace J2P12_CS_Intermediate_MonoGame
 
             _spriteBatch.Begin();
 
-
             player.Draw();
-            enemy.Draw();
 
-
-
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.Draw(_spriteBatch);
+            }
 
             _spriteBatch.End();
             base.Draw(gameTime);
