@@ -42,13 +42,22 @@ namespace J2P12_CS_Intermediate_MonoGame
         {
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                playerPosition.Y -= 10;
+                // Adds extra feature to 'Speed Up' when holding shift.
+                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                {
+                    playerPosition.Y -= 10;
+                }
+                playerPosition.Y -= 5;
 
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-
-                playerPosition.Y += 10;
+                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                {
+                    playerPosition.Y += 10;
+                    
+                }
+                playerPosition.Y += 5;
                 
             }
             // Makes it so u can't go through the border of the screen.
