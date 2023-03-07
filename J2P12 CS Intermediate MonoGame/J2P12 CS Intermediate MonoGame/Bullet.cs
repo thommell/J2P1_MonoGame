@@ -16,7 +16,7 @@ namespace J2P12_CS_Intermediate_MonoGame
         public Player player;
 
 
-        public float bulletImageScale = 0.1f;
+        public float bulletImageScale = 0.06f;
         public float bulletSpeed = 5f;
 
         public Vector2 bulletPosition;
