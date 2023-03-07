@@ -34,7 +34,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your initialization logic here
 
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            enemy = new Enemy();
+            enemy = new Enemy(player);
             base.Initialize();
 
         }
@@ -49,7 +49,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             player.SetPlayerSize();
 
             enemy.sb = _spriteBatch;
-            //enemy.enemyTexture = Content.Load<Texture2D>("");
+            enemy.enemyTexture = Content.Load<Texture2D>("enemy_ghost");
 
             // TODO: use this.Content to load your game content here
         }
@@ -58,7 +58,7 @@ namespace J2P12_CS_Intermediate_MonoGame
         {
             // TODO: Add your update logic here
             player.MovementUpdate(gameTime);
-
+            enemy.EnemyMovement(gameTime);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             shootingCooldown -= deltaTime;
 
@@ -83,8 +83,6 @@ namespace J2P12_CS_Intermediate_MonoGame
             {
                 bullets.Remove(bullet);
             }
-            base.Update(gameTime);
-
 
         }
 
@@ -97,6 +95,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             _spriteBatch.Begin();
 
             player.Draw();
+            enemy.DrawEnemy();
 
             foreach (Bullet bullet in bullets)
             {
