@@ -12,9 +12,10 @@ namespace J2P12_CS_Intermediate_MonoGame
     {
         private GraphicsDeviceManager _graphics;
         public int i = 0;
-        private SpriteBatch _spriteBatch;
+        public SpriteBatch _spriteBatch;
         Player player;
         Enemy enemy;
+        CollisionManager coll;
         public List<Bullet> bullets = new List<Bullet>();
         public List<Bullet> bulletsToRemove = new List<Bullet>();
         private float shootingCooldown = 0f;
@@ -35,6 +36,8 @@ namespace J2P12_CS_Intermediate_MonoGame
 
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             enemy = new Enemy(player);
+            coll = new CollisionManager(enemy, _spriteBatch);
+            
             base.Initialize();
 
         }
@@ -45,7 +48,6 @@ namespace J2P12_CS_Intermediate_MonoGame
 
             player.sb = _spriteBatch;
             player.playerTexture = Content.Load<Texture2D>("playerImageRed");
-
             player.SetPlayerSize();
 
             enemy.sb = _spriteBatch;
@@ -59,6 +61,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your update logic here
             player.MovementUpdate(gameTime);
             enemy.EnemyMovement(gameTime);
+            coll.CollisionCheck(gameTime, bullets, enemy.enemyTexture);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             shootingCooldown -= deltaTime;
 
@@ -98,9 +101,10 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-
+            
             player.Draw();
             enemy.DrawEnemy();
+            coll.DrawHitboxes(_spriteBatch);
 
             foreach (Bullet bullet in bullets)
             {
@@ -111,4 +115,4 @@ namespace J2P12_CS_Intermediate_MonoGame
             base.Draw(gameTime);
         }
     }
-}
+} 

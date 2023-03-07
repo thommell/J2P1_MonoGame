@@ -36,24 +36,35 @@ namespace J2P12_CS_Intermediate_MonoGame
         public void EnemyMovement(GameTime gameTime)
         {
             enemyPosition = new Vector2(700, enemyPosY);
-            switch (enemyInfo)
-            {
-                case "up":
-                    enemyPosY += enemySpeed;
-                    break;
-                case "down":
-                    enemyPosY -= enemySpeed; 
-                    break;
-            }
-            if (enemyPosY <= 50)
-            {
-                enemyInfo = "up";
-            }
-            else if (enemyPosY >= 450)
-            {
-                enemyInfo = "down";
-            }
+            //switch (enemyInfo)
+            //{
+            //    case "up":
+            //        enemyPosY += enemySpeed;
+            //        break;
+            //    case "down":
+            //        enemyPosY -= enemySpeed; 
+            //        break;
+            //}
+            //if (enemyPosY <= 50)
+            //{
+            //    enemyInfo = "up";
+            //}
+            //else if (enemyPosY >= 450)
+            //{
+            //    enemyInfo = "down";
+            //}
 
+        }
+        public void HandleEnemyCollision(GameTime gameTime, Texture2D enemyTex, Texture2D bulletTex, Enemy enemy) 
+        {
+            Rectangle rect1 = new Rectangle(0, 0, enemyTex.Width, bulletTex.Height);
+            Rectangle rect2 = new Rectangle(0, 0, bulletTex.Width, bulletTex.Height);
+
+            // coll check
+            if (rect1.Intersects(rect2))
+            {
+                enemyTexture = null;
+            }
         }
     }
 }
