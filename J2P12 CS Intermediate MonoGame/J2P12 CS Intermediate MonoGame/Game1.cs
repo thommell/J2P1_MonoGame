@@ -84,6 +84,11 @@ namespace J2P12_CS_Intermediate_MonoGame
                 bullets.Remove(bullet);
             }
 
+            // i've had to make 2 lists here because i wanted to iterate through the entries
+            // and make changes to the list, this isn't allowed and got me an error.
+            // after thinking about it I made a seperate list to remove the bullets there.
+            // instead of removing it in the same list.
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
