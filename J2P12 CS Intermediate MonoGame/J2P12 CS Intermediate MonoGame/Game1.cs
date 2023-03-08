@@ -38,7 +38,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             enemy = new Enemy(player);
             coll = new CollisionManager(enemy, _spriteBatch);
-            bullet = new Bullet(player, bullet.bulletTexture);
+            
             
             base.Initialize();
 
@@ -51,7 +51,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             player.sb = _spriteBatch;
             player.playerTexture = Content.Load<Texture2D>("playerImageRed");
             player.SetPlayerSize();
-
+            bullet = new Bullet(player, Content.Load<Texture2D>("bullet"));
             enemy.sb = _spriteBatch;
             enemy.enemyTexture = Content.Load<Texture2D>("enemy_ghost");
 

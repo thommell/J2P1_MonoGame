@@ -36,8 +36,8 @@ namespace J2P12_CS_Intermediate_MonoGame
         {
             foreach (Rectangle bulletRectangle in bulletRectangles)
             {
-                sb.Draw(bullet.bulletTexture, bulletRectangle, Color.White);
-                Debug.WriteLine(tex2);
+               // sb.Draw(bullet.bulletTexture, bulletRectangle, Color.White);
+                //Debug.WriteLine(tex2);
             }
 
         }
