@@ -13,8 +13,10 @@ namespace J2P12_CS_Intermediate_MonoGame
     {
         public Rectangle tex1;
         public Rectangle tex2 = new Rectangle();
+        public List<Rectangle> bulletRectangles = new List<Rectangle>();
         SpriteBatch sb;
         Enemy enemy;
+
         public CollisionManager(Enemy enemy, SpriteBatch sb)
         {
             this.enemy = enemy;
@@ -22,27 +24,22 @@ namespace J2P12_CS_Intermediate_MonoGame
         }
         public void CollisionCheck(GameTime gameTime, List<Bullet> bullets, Texture2D enemyTexture)
         {
-            tex1.X = (int)enemy.enemyPosition.X;
-            tex2 = new Rectangle(0, 0, enemyTexture.Width / 20, enemyTexture.Height / 20);
+            //tex1.X = (float)enemy.enemyPosition.X;
+            
             foreach (Bullet bullet in bullets)
             {
-                if (bullet.bulletTexture != null)
-                {
-                    tex1 = new Rectangle(0, 0, bullet.bulletTexture.Width / 20, bullet.bulletTexture.Height / 20);
-                    
-                }
-                
-                if (tex1.Intersects(tex2))
-                {
-                    Debug.WriteLine(tex1.Intersects(tex2));
-                    bullet.bulletTexture = null;
-                }
+                Rectangle bulletRectangle = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width, bullet.bulletTexture.Height);
+                bulletRectangles.Add(bulletRectangle);
             }
         }
-        public void DrawHitboxes(SpriteBatch sb)
+        public void DrawHitboxes(SpriteBatch sb, Bullet bullet)
         {
-            sb.Draw(enemy.enemyTexture, tex1, Color.White);
-            Debug.WriteLine(tex2);
+            foreach (Rectangle bulletRectangle in bulletRectangles)
+            {
+                sb.Draw(bullet.bulletTexture, bulletRectangle, Color.White);
+                Debug.WriteLine(tex2);
+            }
+
         }
     }
 }

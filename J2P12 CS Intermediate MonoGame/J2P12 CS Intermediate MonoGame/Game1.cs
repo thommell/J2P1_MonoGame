@@ -16,6 +16,7 @@ namespace J2P12_CS_Intermediate_MonoGame
         Player player;
         Enemy enemy;
         CollisionManager coll;
+        Bullet bullet;
         public List<Bullet> bullets = new List<Bullet>();
         public List<Bullet> bulletsToRemove = new List<Bullet>();
         private float shootingCooldown = 0f;
@@ -37,6 +38,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             enemy = new Enemy(player);
             coll = new CollisionManager(enemy, _spriteBatch);
+            bullet = new Bullet(player, bullet.bulletTexture);
             
             base.Initialize();
 
@@ -91,6 +93,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             // and make changes to the list, this isn't allowed and got me an error.
             // after thinking about it I made a seperate list to remove the bullets there.
             // instead of removing it in the same list.
+
             base.Update(gameTime);
         }
 
@@ -104,7 +107,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             
             player.Draw();
             enemy.DrawEnemy();
-            coll.DrawHitboxes(_spriteBatch);
+            coll.DrawHitboxes(_spriteBatch, bullet);
 
             foreach (Bullet bullet in bullets)
             {
