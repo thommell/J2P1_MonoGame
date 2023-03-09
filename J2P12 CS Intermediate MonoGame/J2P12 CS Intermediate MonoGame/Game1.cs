@@ -38,8 +38,8 @@ namespace J2P12_CS_Intermediate_MonoGame
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             enemy = new Enemy(player);
             coll = new CollisionManager(enemy, _spriteBatch);
-            
-            
+
+
             base.Initialize();
 
         }
@@ -75,6 +75,8 @@ namespace J2P12_CS_Intermediate_MonoGame
                 Debug.WriteLine("user has pressed space!");
             }
 
+
+            Rectangle enemyCollider = new Rectangle((int)enemy.enemyPosition.X, (int)enemy.enemyPosition.Y, enemy.enemyTexture.Width, enemy.enemyTexture.Height);
             foreach (Bullet bullet in bullets)
             {
                 bullet.BulletUpdate(gameTime);
@@ -82,6 +84,14 @@ namespace J2P12_CS_Intermediate_MonoGame
                 {
                     bulletsToRemove.Add(bullet);
                 }
+                Rectangle bulletRectangle = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width, bullet.bulletTexture.Height);
+
+                if(bulletRectangle.Intersects(enemyCollider))
+                {
+                    //Collision
+                    //_texture.dispose();
+                }
+
             }
             // extra foreach loop to check if any bullet is in the bulletsToRemove list.
             foreach (Bullet bullet in bulletsToRemove)
@@ -104,7 +114,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-            
+
             player.Draw();
             enemy.DrawEnemy();
             coll.DrawHitboxes(_spriteBatch, bullet);
@@ -118,4 +128,4 @@ namespace J2P12_CS_Intermediate_MonoGame
             base.Draw(gameTime);
         }
     }
-} 
+}
