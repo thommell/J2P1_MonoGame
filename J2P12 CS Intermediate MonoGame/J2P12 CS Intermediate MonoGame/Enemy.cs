@@ -30,29 +30,35 @@ namespace J2P12_CS_Intermediate_MonoGame
 
         public void DrawEnemy()
         {
-            sb.Draw(enemyTexture, enemyPosition, null, Color.White, 0f, new Vector2(player.playerTexture.Width / 2, player.playerTexture.Height / 2), player.imageScale, SpriteEffects.None, 0f);
+            if (enemyTexture != null)
+            {
+                sb.Draw(enemyTexture, enemyPosition, null, Color.White, 0f, new Vector2(player.playerTexture.Width / 2, player.playerTexture.Height / 2), player.imageScale, SpriteEffects.None, 0f);
+            }
+            
         }
 
-        public void EnemyMovement(GameTime gameTime)
+        public void EnemyMovement(GameTime gameTime, Rectangle enemyColl)
         {
             enemyPosition = new Vector2(700, enemyPosY);
-            //switch (enemyInfo)
-            //{
-            //    case "up":
-            //        enemyPosY += enemySpeed;
-            //        break;
-            //    case "down":
-            //        enemyPosY -= enemySpeed; 
-            //        break;
-            //}
-            //if (enemyPosY <= 50)
-            //{
-            //    enemyInfo = "up";
-            //}
-            //else if (enemyPosY >= 450)
-            //{
-            //    enemyInfo = "down";
-            //}
+            enemyColl.Y = (int)enemyPosY;
+            
+            switch (enemyInfo)
+            {
+                case "up":
+                    enemyPosY += enemySpeed;
+                    break;
+                case "down":
+                    enemyPosY -= enemySpeed;
+                    break;
+            }
+            if (enemyPosY <= 50)
+            {
+                enemyInfo = "up";
+            }
+            else if (enemyPosY >= 450)
+            {
+                enemyInfo = "down";
+            }
 
         }
         public void HandleEnemyCollision(GameTime gameTime, Texture2D enemyTex, Texture2D bulletTex, Enemy enemy) 

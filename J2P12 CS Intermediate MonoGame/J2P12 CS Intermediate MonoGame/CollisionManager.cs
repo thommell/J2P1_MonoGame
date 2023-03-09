@@ -34,11 +34,7 @@ namespace J2P12_CS_Intermediate_MonoGame
         }
         public void DrawHitboxes(SpriteBatch sb, Bullet bullet)
         {
-            foreach (Rectangle bulletRectangle in bulletRectangles)
-            {
-               // sb.Draw(bullet.bulletTexture, bulletRectangle, Color.White);
-                //Debug.WriteLine(tex2);
-            }
+            
 
         }
     }

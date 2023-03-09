@@ -20,6 +20,7 @@ namespace J2P12_CS_Intermediate_MonoGame
         public List<Bullet> bullets = new List<Bullet>();
         public List<Bullet> bulletsToRemove = new List<Bullet>();
         private float shootingCooldown = 0f;
+        public Rectangle enemyCollider;
 
 
 
@@ -62,7 +63,7 @@ namespace J2P12_CS_Intermediate_MonoGame
         {
             // TODO: Add your update logic here
             player.MovementUpdate(gameTime);
-            enemy.EnemyMovement(gameTime);
+            enemy.EnemyMovement(gameTime, enemyCollider);
             coll.CollisionCheck(gameTime, bullets, enemy.enemyTexture);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             shootingCooldown -= deltaTime;
@@ -75,8 +76,11 @@ namespace J2P12_CS_Intermediate_MonoGame
                 Debug.WriteLine("user has pressed space!");
             }
 
+            if (enemy.enemyTexture != null)
+            {
+               enemyCollider = new Rectangle((int)enemy.enemyPosition.X, (int)enemy.enemyPosition.Y, enemy.enemyTexture.Width / 25, enemy.enemyTexture.Height / 25);
 
-            Rectangle enemyCollider = new Rectangle((int)enemy.enemyPosition.X, (int)enemy.enemyPosition.Y, enemy.enemyTexture.Width, enemy.enemyTexture.Height);
+            }
             foreach (Bullet bullet in bullets)
             {
                 bullet.BulletUpdate(gameTime);
@@ -84,12 +88,12 @@ namespace J2P12_CS_Intermediate_MonoGame
                 {
                     bulletsToRemove.Add(bullet);
                 }
-                Rectangle bulletRectangle = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width, bullet.bulletTexture.Height);
+                Rectangle bulletRectangle = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width / 25, bullet.bulletTexture.Height / 25);
 
                 if(bulletRectangle.Intersects(enemyCollider))
                 {
-                    //Collision
-                    //_texture.dispose();
+                    Debug.WriteLine("yo");
+                    enemy.enemyTexture = null;
                 }
 
             }
