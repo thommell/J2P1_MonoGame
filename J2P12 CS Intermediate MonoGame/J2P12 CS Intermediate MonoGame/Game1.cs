@@ -94,6 +94,8 @@ namespace J2P12_CS_Intermediate_MonoGame
                 {
                     Debug.WriteLine("yo");
                     enemy.enemyTexture = null;
+                    enemyCollider = new Rectangle(0, 0, 0, 0);
+                    enemy.CreateNewEnemy();
                 }
 
             }

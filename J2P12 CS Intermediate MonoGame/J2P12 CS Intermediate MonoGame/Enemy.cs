@@ -39,6 +39,8 @@ namespace J2P12_CS_Intermediate_MonoGame
 
         public void EnemyMovement(GameTime gameTime, Rectangle enemyColl)
         {
+            Random rng = new Random();
+            int randomNumber = rng.Next(100, 700);
             enemyPosition = new Vector2(700, enemyPosY);
             enemyColl.Y = (int)enemyPosY;
             
@@ -61,16 +63,11 @@ namespace J2P12_CS_Intermediate_MonoGame
             }
 
         }
-        public void HandleEnemyCollision(GameTime gameTime, Texture2D enemyTex, Texture2D bulletTex, Enemy enemy) 
+        public void CreateNewEnemy()
         {
-            Rectangle rect1 = new Rectangle(0, 0, enemyTex.Width, bulletTex.Height);
-            Rectangle rect2 = new Rectangle(0, 0, bulletTex.Width, bulletTex.Height);
+            System.Threading.Thread.Sleep(1250);
 
-            // coll check
-            if (rect1.Intersects(rect2))
-            {
-                enemyTexture = null;
-            }
+
         }
     }
 }
