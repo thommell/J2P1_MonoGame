@@ -13,6 +13,7 @@ namespace J2P12_CS_Intermediate_MonoGame
     {
         Player player;
         Game1 game;
+        SetTextureSizes sts;
 
         public int enemyHealth = 10;
         public Texture2D enemyTexture;
@@ -23,48 +24,38 @@ namespace J2P12_CS_Intermediate_MonoGame
 
         public SpriteBatch sb;
 
-        public Enemy(Player player)
+        public Enemy(Player player, SetTextureSizes sts)
         {
             this.player = player;
-        }
+            this.sts = sts;
+        }       
 
         public void DrawEnemy()
         {
-            sb.Draw(enemyTexture, enemyPosition, null, Color.White, 0f, new Vector2(player.playerTexture.Width / 2, player.playerTexture.Height / 2), player.imageScale, SpriteEffects.None, 0f);
+            sb.Draw(enemyTexture, enemyPosition, null, Color.White, 0f, new Vector2(player.playerTexture.Width * sts.halfSizeEnemy, player.playerTexture.Height * sts.halfSizeEnemy), player.imageScale, SpriteEffects.None, 0f);
         }
 
         public void EnemyMovement(GameTime gameTime)
         {
             enemyPosition = new Vector2(700, enemyPosY);
-            //switch (enemyInfo)
-            //{
-            //    case "up":
-            //        enemyPosY += enemySpeed;
-            //        break;
-            //    case "down":
-            //        enemyPosY -= enemySpeed; 
-            //        break;
-            //}
-            //if (enemyPosY <= 50)
-            //{
-            //    enemyInfo = "up";
-            //}
-            //else if (enemyPosY >= 450)
-            //{
-            //    enemyInfo = "down";
-            //}
-
-        }
-        public void HandleEnemyCollision(GameTime gameTime, Texture2D enemyTex, Texture2D bulletTex, Enemy enemy) 
-        {
-            Rectangle rect1 = new Rectangle(0, 0, enemyTex.Width, bulletTex.Height);
-            Rectangle rect2 = new Rectangle(0, 0, bulletTex.Width, bulletTex.Height);
-
-            // coll check
-            if (rect1.Intersects(rect2))
+            switch (enemyInfo)
             {
-                enemyTexture = null;
+                case "up":
+                    enemyPosY += enemySpeed;
+                    break;
+                case "down":
+                    enemyPosY -= enemySpeed;
+                    break;
             }
+            if (enemyPosY <= 50)
+            {
+                enemyInfo = "up";
+            }
+            else if (enemyPosY >= 450)
+            {
+                enemyInfo = "down";
+            }
+
         }
     }
 }

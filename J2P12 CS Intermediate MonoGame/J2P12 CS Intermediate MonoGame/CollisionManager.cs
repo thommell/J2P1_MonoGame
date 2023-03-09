@@ -11,9 +11,9 @@ namespace J2P12_CS_Intermediate_MonoGame
 {
     public class CollisionManager
     {
-        public Rectangle tex1;
-        public Rectangle tex2 = new Rectangle();
+        public Rectangle ghostRectangle = new Rectangle();
         public List<Rectangle> bulletRectangles = new List<Rectangle>();
+        public Rectangle bulletRectangle = new Rectangle();
         SpriteBatch sb;
         Enemy enemy;
 
@@ -22,24 +22,41 @@ namespace J2P12_CS_Intermediate_MonoGame
             this.enemy = enemy;
             this.sb = sb;
         }
-        public void CollisionCheck(GameTime gameTime, List<Bullet> bullets, Texture2D enemyTexture)
+        public void AssignRectangle()
         {
-            //tex1.X = (float)enemy.enemyPosition.X;
-            
-            foreach (Bullet bullet in bullets)
+            ghostRectangle = new Rectangle((int)enemy.enemyPosition.X, (int)enemy.enemyPosition.Y, enemy.enemyTexture.Width, enemy.enemyTexture.Height);
+        }
+
+        public void CollisionCheck(GameTime gameTime, List<Bullet> bullets, Texture2D enemyTexture, Bullet bullet)
+        {
+            ghostRectangle.Y = (int)enemy.enemyPosition.Y;
+
+            bulletRectangle = new Rectangle(0, 0, (int)bullet.bulletTexture.Width, (int)bullet.bulletTexture.Height);
+
+            // add rectangle if bullet gets created
+            for (int i = 0; i < bullets.Count; i++)
             {
-                Rectangle bulletRectangle = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width, bullet.bulletTexture.Height);
                 bulletRectangles.Add(bulletRectangle);
+                Debug.WriteLine(bullets.Count);
+            }
+            // remove rectangle if bullet goes out of bounds
+            for (int i2 = 0; i2 < bullet.bulletsToRemove.Count; i2++)
+            {
+                bulletRectangles.Remove(bulletRectangles[i2]);
             }
         }
-        public void DrawHitboxes(SpriteBatch sb, Bullet bullet)
+        public void DrawHitboxes(SpriteBatch sb, Bullet bullet, SetTextureSizes sts, Player player)
         {
-            foreach (Rectangle bulletRectangle in bulletRectangles)
+            // Draw Texture1 and texture2
+            sb.Draw(enemy.enemyTexture, enemy.enemyPosition, ghostRectangle, Color.Red, 0f, new Vector2(enemy.enemyTexture.Width * sts.halfSizeEnemy, enemy.enemyTexture.Height * sts.halfSizeEnemy), player.imageScale, SpriteEffects.None, 0f);
+            for (int i2 = 0; i2 < bulletRectangles.Count; i2++)
             {
-                sb.Draw(bullet.bulletTexture, bulletRectangle, Color.White);
-                Debug.WriteLine(tex2);
-            }
+                // move bullets hitbox along with the normal bullets
+               // 
 
+                
+            }
+            sb.Draw(bullet.bulletTexture, bullet.bulletPosition, bulletRectangle, Color.Red, 0f, new Vector2(bullet.bulletTexture.Width * sts.halfSizeBullet, bullet.bulletTexture.Height * sts.halfSizeBullet), player.imageScale, SpriteEffects.None, 0f);
         }
     }
 }

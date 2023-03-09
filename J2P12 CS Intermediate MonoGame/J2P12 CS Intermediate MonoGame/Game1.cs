@@ -17,8 +17,8 @@ namespace J2P12_CS_Intermediate_MonoGame
         Enemy enemy;
         CollisionManager coll;
         Bullet bullet;
-        public List<Bullet> bullets = new List<Bullet>();
-        public List<Bullet> bulletsToRemove = new List<Bullet>();
+        SetTextureSizes sts;
+
         private float shootingCooldown = 0f;
 
 
@@ -36,9 +36,11 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your initialization logic here
 
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            enemy = new Enemy(player);
+            sts = new SetTextureSizes();
+            enemy = new Enemy(player, sts);
             coll = new CollisionManager(enemy, _spriteBatch);
-            bullet = new Bullet(player, bullet.bulletTexture);
+            
+            
             
             base.Initialize();
 
@@ -54,39 +56,44 @@ namespace J2P12_CS_Intermediate_MonoGame
 
             enemy.sb = _spriteBatch;
             enemy.enemyTexture = Content.Load<Texture2D>("enemy_ghost");
-
+            bullet = new Bullet(player, bullet.bulletTexture);
+            sts.SetSizes(enemy, player, bullet);
+            coll.AssignRectangle();
             // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
             // TODO: Add your update logic here
+
             player.MovementUpdate(gameTime);
             enemy.EnemyMovement(gameTime);
-            coll.CollisionCheck(gameTime, bullets, enemy.enemyTexture);
+            coll.CollisionCheck(gameTime, bullet.bullets, enemy.enemyTexture, bullet);
+
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             shootingCooldown -= deltaTime;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && shootingCooldown <= 0f)
             {
                 shootingCooldown = 0.5f;
                 Bullet bullet = new Bullet(player, Content.Load<Texture2D>("bullet"));
-                bullets.Add(bullet);
+                bullet.bullets.Add(bullet);
                 Debug.WriteLine("user has pressed space!");
             }
 
-            foreach (Bullet bullet in bullets)
+            foreach (Bullet bullet in bullet.bullets)
             {
                 bullet.BulletUpdate(gameTime);
                 if (bullet.bulletPosition.X >= 850) // removes (game)object if the X-axis of ANY bullet goes above 850 OR is 850. 
                 {
-                    bulletsToRemove.Add(bullet);
+                    bullet.bulletsToRemove.Add(bullet);
                 }
             }
             // extra foreach loop to check if any bullet is in the bulletsToRemove list.
-            foreach (Bullet bullet in bulletsToRemove)
+            foreach (Bullet bullet in bullet.bulletsToRemove)
             {
-                bullets.Remove(bullet);
+                bullet.bullets.Remove(bullet);
             }
 
             // i've had to make 2 lists here because i wanted to iterate through the entries
@@ -107,9 +114,9 @@ namespace J2P12_CS_Intermediate_MonoGame
             
             player.Draw();
             enemy.DrawEnemy();
-            coll.DrawHitboxes(_spriteBatch, bullet);
+            coll.DrawHitboxes(_spriteBatch, bullet, sts, player);
 
-            foreach (Bullet bullet in bullets)
+            foreach (Bullet bullet in bullet.bullets)
             {
                 bullet.Draw(_spriteBatch);
             }

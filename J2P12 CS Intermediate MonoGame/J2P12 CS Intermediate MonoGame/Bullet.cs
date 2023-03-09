@@ -21,6 +21,9 @@ namespace J2P12_CS_Intermediate_MonoGame
         public Vector2 bulletPosition;
         public Texture2D bulletTexture;
 
+        public List<Bullet> bullets = new List<Bullet>();
+        public List<Bullet> bulletsToRemove = new List<Bullet>();
+
         // Bullet constructor -- the vector2 basically makes the (new) bullet spawn on the player but just a bit in front.
         public Bullet(Player player, Texture2D texture)
         {
@@ -32,6 +35,9 @@ namespace J2P12_CS_Intermediate_MonoGame
         public void BulletUpdate(GameTime gameTime)
         {
             bulletPosition.X += bulletSpeed;
+
+
+
         }
 
         // Draw the bullets
