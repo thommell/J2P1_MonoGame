@@ -22,6 +22,7 @@ namespace J2P12_CS_Intermediate_MonoGame
         public Texture2D enemyBullet;
 
         public Texture2D enemyBulletTexture;
+        public Rectangle enemyBullRect;
 
         public float enemyPosY = 200;
         public float enemySpeed = 5;
@@ -92,15 +93,16 @@ namespace J2P12_CS_Intermediate_MonoGame
 
             if (enemyShootingCooldown <= 0)
             {
+                enemyBullRect = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width / 25, bullet.bulletTexture.Height / 25);
                 enemyBulletPosition = new Vector2(700, enemyPosY);
                 enemyBullet = enemyBulletTexture;
                 enemyShootingCooldown = 5f;
+                Debug.WriteLine(enemyBullRect);
             }  
         }
         public void EnemyBulletUpdate(GameTime gameTime)
         {
-            enemyBulletPosition.X -= enemyBulletSpeed;
-            Debug.WriteLine(enemyBulletPosition.X);
+            enemyBulletPosition.X -= enemyBulletSpeed;            
         }
     }
 }

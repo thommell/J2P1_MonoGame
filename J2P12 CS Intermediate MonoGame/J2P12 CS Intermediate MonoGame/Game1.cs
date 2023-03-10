@@ -23,6 +23,8 @@ namespace J2P12_CS_Intermediate_MonoGame
         private float shootingCooldown = 0f;
         private float spawnCooldown = 1f;
         public Rectangle enemyCollider;
+        public Rectangle playerCollider;
+        public Rectangle enemyBullRect;
         public bool timerCheck = false;
         public bool enemySpawn = false;
         public int playerScore = 0;
@@ -77,7 +79,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             player.MovementUpdate(gameTime);
             enemy.EnemyUpdate(gameTime, enemyCollider);
             coll.CollisionCheck(gameTime, bullets, enemy.enemyTexture);
-            enemy.EnemyShooting(gameTime, bullet, deltaTime);
+            enemy.EnemyShooting(gameTime, bullet, deltaTime, enemyBullRect);
 
 
             shootingCooldown -= deltaTime;
@@ -106,6 +108,12 @@ namespace J2P12_CS_Intermediate_MonoGame
                enemyCollider = new Rectangle((int)enemy.enemyPosition.X, (int)enemy.enemyPosition.Y, enemy.enemyTexture.Width / 25, enemy.enemyTexture.Height / 25);
 
             }
+
+            if (player.playerTexture != null) 
+            {
+                playerCollider = new Rectangle((int)player.playerPosition.X, (int)player.playerPosition.Y, player.playerTexture.Width / 25, player.playerTexture.Height / 25);
+            }
+            enemyBullRect = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width / 25, bullet.bulletTexture.Height / 25);
             foreach (Bullet bullet in bullets)
             {
                 bullet.BulletUpdate(gameTime);
@@ -114,8 +122,9 @@ namespace J2P12_CS_Intermediate_MonoGame
                     bulletsToRemove.Add(bullet);
                 }
                 Rectangle bulletRectangle = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width / 25, bullet.bulletTexture.Height / 25);
-
-                if(bulletRectangle.Intersects(enemyCollider))
+                
+                // enemy collision check
+                if (bulletRectangle.Intersects(enemyCollider))
                 {
                     timerCheck = true;
                     Debug.WriteLine("yo");
@@ -124,7 +133,12 @@ namespace J2P12_CS_Intermediate_MonoGame
                     playerScore++;
                     
                 }
-                
+
+                // player collision check
+                if (enemyBullRect.Intersects(playerCollider))
+                {
+                    Debug.WriteLine("player death");
+                }
             }
             enemy.EnemyBulletUpdate(gameTime);
             // extra foreach loop to check if any bullet is in the bulletsToRemove list.
