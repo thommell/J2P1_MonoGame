@@ -24,13 +24,15 @@ namespace J2P12_CS_Intermediate_MonoGame
         private float spawnCooldown = 1f;
         public Rectangle enemyCollider;
         public Rectangle playerCollider;
-        public Rectangle enemyBullRect;
         public bool timerCheck = false;
         public bool enemySpawn = false;
+        
         public int playerScore = 0;
         public string playerScoreString;
         SpriteFont font;
 
+        private Texture2D rectangleTexture;
+        private Texture2D rectangleTexture2;
 
 
         public Game1()
@@ -69,6 +71,27 @@ namespace J2P12_CS_Intermediate_MonoGame
 
             font = Content.Load<SpriteFont>("font2");
 
+
+
+            // Create a new Texture2D with a width and height of 1 pixel
+            rectangleTexture = new Texture2D(GraphicsDevice, 1, 1);
+
+            // Set the color of the texture to solid white
+            rectangleTexture.SetData(new[] { Color.White });
+
+            // Create a new Texture2D with a width and height of 1 pixel
+            rectangleTexture2 = new Texture2D(GraphicsDevice, 1, 1);
+
+            // Set the color of the texture to solid white
+            rectangleTexture2.SetData(new[] { Color.White });
+
+
+
+
+
+
+
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -79,7 +102,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             player.MovementUpdate(gameTime);
             enemy.EnemyUpdate(gameTime, enemyCollider);
             coll.CollisionCheck(gameTime, bullets, enemy.enemyTexture);
-            enemy.EnemyShooting(gameTime, bullet, deltaTime, enemyBullRect);
+            enemy.EnemyShooting(gameTime, bullet, deltaTime);
 
 
             shootingCooldown -= deltaTime;
@@ -111,9 +134,9 @@ namespace J2P12_CS_Intermediate_MonoGame
 
             if (player.playerTexture != null) 
             {
-                playerCollider = new Rectangle((int)player.playerPosition.X, (int)player.playerPosition.Y, player.playerTexture.Width / 25, player.playerTexture.Height / 25);
+                playerCollider = new Rectangle((int)35, (int)player.playerPosition.Y - 35, player.playerTexture.Width / 20, player.playerTexture.Height / 20);
             }
-            enemyBullRect = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width / 25, bullet.bulletTexture.Height / 25);
+            
             foreach (Bullet bullet in bullets)
             {
                 bullet.BulletUpdate(gameTime);
@@ -133,14 +156,15 @@ namespace J2P12_CS_Intermediate_MonoGame
                     playerScore++;
                     
                 }
-
-                // player collision check
-                if (enemyBullRect.Intersects(playerCollider))
-                {
-                    Debug.WriteLine("player death");
-                }
             }
-            enemy.EnemyBulletUpdate(gameTime);
+            // player collision check
+            if (enemy.enemyBullRect.Intersects(playerCollider) && enemy.enemyBulletPosition.X < 400)
+            {
+                Debug.WriteLine("hrbhsubhr");
+                enemy.enemyBullRect = new Rectangle(0,0,0,0);
+                Exit();
+            }
+            enemy.EnemyBulletUpdate(gameTime, playerCollider);
             // extra foreach loop to check if any bullet is in the bulletsToRemove list.
             foreach (Bullet bullet in bulletsToRemove)
             {
@@ -162,10 +186,19 @@ namespace J2P12_CS_Intermediate_MonoGame
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-
             player.Draw();
             enemy.DrawEnemy();
             coll.DrawHitboxes(_spriteBatch, bullet);
+
+
+
+            // Debug to draw the hitboxes
+         //   _spriteBatch.Draw(rectangleTexture, new Rectangle((int)35, (int)player.playerPosition.Y - 30, player.playerTexture.Width / 20, player.playerTexture.Height / 20), Color.Red);
+        //    _spriteBatch.Draw(rectangleTexture2, new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width / 25, bullet.bulletTexture.Height / 25), Color.Red);
+
+
+
+
 
             foreach (Bullet bullet in bullets)
             {

@@ -26,11 +26,12 @@ namespace J2P12_CS_Intermediate_MonoGame
 
         public float enemyPosY = 200;
         public float enemySpeed = 5;
-        public float enemyBulletSpeed = 4f;
+        public float enemyBulletSpeed = 8f;
 
         public string enemyInfo = "up";
 
         private float enemyShootingCooldown;
+        private float consoleTest;
 
         public SpriteBatch sb;
 
@@ -49,7 +50,8 @@ namespace J2P12_CS_Intermediate_MonoGame
             {
                 sb.Draw(enemyBullet, enemyBulletPosition, null, Color.White, 0f, new Vector2(player.playerTexture.Width / 2, player.playerTexture.Height / 2), player.imageScale, SpriteEffects.FlipHorizontally, 0f);
             }
-            
+
+
         }
 
         public void EnemyUpdate(GameTime gameTime, Rectangle enemyColl)
@@ -90,19 +92,29 @@ namespace J2P12_CS_Intermediate_MonoGame
         public void EnemyShooting(GameTime gameTime, Bullet bullet, float deltaTime)
         {
             enemyShootingCooldown -= deltaTime;
-
-            if (enemyShootingCooldown <= 0)
+            consoleTest -= deltaTime;
+            
+            if (enemyShootingCooldown <= 0 && enemyTexture != null) 
             {
-                enemyBullRect = new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width / 25, bullet.bulletTexture.Height / 25);
+                enemyBullRect = new Rectangle(700, (int)enemyPosY, bullet.bulletTexture.Width / 25, bullet.bulletTexture.Height / 25);
                 enemyBulletPosition = new Vector2(700, enemyPosY);
                 enemyBullet = enemyBulletTexture;
-                enemyShootingCooldown = 5f;
+                enemyShootingCooldown = 4.5f;
                 Debug.WriteLine(enemyBullRect);
             }  
         }
-        public void EnemyBulletUpdate(GameTime gameTime)
+        public void EnemyBulletUpdate(GameTime gameTime, Rectangle coll)
         {
-            enemyBulletPosition.X -= enemyBulletSpeed;            
+            enemyBulletPosition.X -= enemyBulletSpeed;
+            enemyBullRect.X -= (int)enemyBulletSpeed;
+
+            enemyBullRect.X = (int)enemyBulletPosition.X;
+            if (consoleTest <= 0)
+            {
+                consoleTest = 1.25f;
+                Debug.WriteLine(enemyBullRect);
+                Debug.WriteLine(coll + "player");
+            }
         }
     }
 }
