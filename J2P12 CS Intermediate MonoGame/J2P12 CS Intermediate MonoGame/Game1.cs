@@ -63,6 +63,8 @@ namespace J2P12_CS_Intermediate_MonoGame
             enemy.sb = _spriteBatch;
             enemy.enemyTexture = Content.Load<Texture2D>("enemy_ghost");
 
+            enemy.enemyBulletTexture = Content.Load<Texture2D>("bullet");
+
             font = Content.Load<SpriteFont>("font2");
 
             // TODO: use this.Content to load your game content here
@@ -70,11 +72,14 @@ namespace J2P12_CS_Intermediate_MonoGame
 
         protected override void Update(GameTime gameTime)
         {
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // TODO: Add your update logic here
             player.MovementUpdate(gameTime);
-            enemy.EnemyMovement(gameTime, enemyCollider);
+            enemy.EnemyUpdate(gameTime, enemyCollider);
             coll.CollisionCheck(gameTime, bullets, enemy.enemyTexture);
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            enemy.EnemyShooting(gameTime, bullet, deltaTime);
+
+
             shootingCooldown -= deltaTime;
             
             if (timerCheck)
@@ -119,8 +124,9 @@ namespace J2P12_CS_Intermediate_MonoGame
                     playerScore++;
                     
                 }
-
+                
             }
+            enemy.EnemyBulletUpdate(gameTime);
             // extra foreach loop to check if any bullet is in the bulletsToRemove list.
             foreach (Bullet bullet in bulletsToRemove)
             {

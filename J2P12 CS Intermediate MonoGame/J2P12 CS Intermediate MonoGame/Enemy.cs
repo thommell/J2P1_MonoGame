@@ -13,15 +13,23 @@ namespace J2P12_CS_Intermediate_MonoGame
     public class Enemy
     {
         Player player;
-        Game1 game;
 
         public int enemyHealth = 10;
         public Texture2D enemyTexture;
         
         public Vector2 enemyPosition;
+        public Vector2 enemyBulletPosition;
+        public Texture2D enemyBullet;
+
+        public Texture2D enemyBulletTexture;
+
         public float enemyPosY = 200;
         public float enemySpeed = 5;
+        public float enemyBulletSpeed = 4f;
+
         public string enemyInfo = "up";
+
+        private float enemyShootingCooldown;
 
         public SpriteBatch sb;
 
@@ -36,9 +44,14 @@ namespace J2P12_CS_Intermediate_MonoGame
             {
                 sb.Draw(enemyTexture, enemyPosition, null, Color.White, 0f, new Vector2(player.playerTexture.Width / 2, player.playerTexture.Height / 2), player.imageScale, SpriteEffects.None, 0f);
             }
+            if (enemyBullet != null)
+            {
+                sb.Draw(enemyBullet, enemyBulletPosition, null, Color.White, 0f, new Vector2(player.playerTexture.Width / 2, player.playerTexture.Height / 2), player.imageScale, SpriteEffects.FlipHorizontally, 0f);
+            }
+            
         }
 
-        public void EnemyMovement(GameTime gameTime, Rectangle enemyColl)
+        public void EnemyUpdate(GameTime gameTime, Rectangle enemyColl)
         {
             Random rng = new Random();
             int randomNumber = rng.Next(100, 700);
@@ -72,6 +85,22 @@ namespace J2P12_CS_Intermediate_MonoGame
                 Debug.WriteLine("new enemy");
                 enemyTexture = enemyTex;
             }
+        }
+        public void EnemyShooting(GameTime gameTime, Bullet bullet, float deltaTime)
+        {
+            enemyShootingCooldown -= deltaTime;
+
+            if (enemyShootingCooldown <= 0)
+            {
+                enemyBulletPosition = new Vector2(700, enemyPosY);
+                enemyBullet = enemyBulletTexture;
+                enemyShootingCooldown = 5f;
+            }  
+        }
+        public void EnemyBulletUpdate(GameTime gameTime)
+        {
+            enemyBulletPosition.X -= enemyBulletSpeed;
+            Debug.WriteLine(enemyBulletPosition.X);
         }
     }
 }
