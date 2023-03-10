@@ -153,8 +153,8 @@ namespace J2P12_CS_Intermediate_MonoGame
             }
             playerScoreString = playerScore.ToString();
             Vector2 textMidPoint = font.MeasureString(playerScoreString) / 2;
-            Vector2 textPos = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
-            _spriteBatch.DrawString(font, playerScoreString, textPos, Color.White, 0, textMidPoint, 1.0f, SpriteEffects.None, 0.5f);
+            Vector2 textPos = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height * 0.05f);
+            _spriteBatch.DrawString(font, playerScoreString, textPos, Color.White, 0, textMidPoint, 1.0f, SpriteEffects.None, 1f);
 
             _spriteBatch.End();
             base.Draw(gameTime);
