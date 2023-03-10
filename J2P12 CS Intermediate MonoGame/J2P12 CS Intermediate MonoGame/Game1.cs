@@ -12,35 +12,37 @@ namespace J2P12_CS_Intermediate_MonoGame
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
+
         public int i = 0;
+
         public SpriteBatch _spriteBatch;
+
         Player player;
         Enemy enemy;
         CollisionManager coll;
         Bullet bullet;
+
         public List<Bullet> bullets = new List<Bullet>();
         public List<Bullet> bulletsToRemove = new List<Bullet>();
+
         private float shootingCooldown = 0f;
         private float spawnCooldown = 1f;
+
         public Rectangle enemyCollider;
         public Rectangle playerCollider;
+
         public bool timerCheck = false;
         public bool enemySpawn = false;
         
         public int playerScore = 0;
         public string playerScoreString;
+
         SpriteFont font;
-
-        private Texture2D rectangleTexture;
-        private Texture2D rectangleTexture2;
-
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
         }
 
         protected override void Initialize()
@@ -50,7 +52,6 @@ namespace J2P12_CS_Intermediate_MonoGame
             player = new Player(new Vector2(35, _graphics.PreferredBackBufferHeight / 2), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             enemy = new Enemy(player);
             coll = new CollisionManager(enemy, _spriteBatch);
-
 
             base.Initialize();
 
@@ -70,28 +71,6 @@ namespace J2P12_CS_Intermediate_MonoGame
             enemy.enemyBulletTexture = Content.Load<Texture2D>("bullet");
 
             font = Content.Load<SpriteFont>("font2");
-
-
-
-            // Create a new Texture2D with a width and height of 1 pixel
-            rectangleTexture = new Texture2D(GraphicsDevice, 1, 1);
-
-            // Set the color of the texture to solid white
-            rectangleTexture.SetData(new[] { Color.White });
-
-            // Create a new Texture2D with a width and height of 1 pixel
-            rectangleTexture2 = new Texture2D(GraphicsDevice, 1, 1);
-
-            // Set the color of the texture to solid white
-            rectangleTexture2.SetData(new[] { Color.White });
-
-
-
-
-
-
-
-
             // TODO: use this.Content to load your game content here
         }
 
@@ -105,8 +84,9 @@ namespace J2P12_CS_Intermediate_MonoGame
             enemy.EnemyShooting(gameTime, bullet, deltaTime);
 
 
+            // Shooting delay
+
             shootingCooldown -= deltaTime;
-            
             if (timerCheck)
             {
                 spawnCooldown -= deltaTime;
@@ -118,6 +98,7 @@ namespace J2P12_CS_Intermediate_MonoGame
                     enemy.CreateNewEnemy(enemySpawn, Content.Load<Texture2D>("enemy_ghost"));
                 }
             }
+            // Player input
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && shootingCooldown <= 0f)
             {
                 shootingCooldown = 0.5f;
@@ -126,12 +107,14 @@ namespace J2P12_CS_Intermediate_MonoGame
                 Debug.WriteLine("user has pressed space!");
             }
 
+            // make Enemy hitbox
             if (enemy.enemyTexture != null)
             {
                enemyCollider = new Rectangle((int)enemy.enemyPosition.X, (int)enemy.enemyPosition.Y, enemy.enemyTexture.Width / 25, enemy.enemyTexture.Height / 25);
 
             }
 
+            // make Player hitbox
             if (player.playerTexture != null) 
             {
                 playerCollider = new Rectangle((int)35, (int)player.playerPosition.Y - 35, player.playerTexture.Width / 20, player.playerTexture.Height / 20);
@@ -185,25 +168,17 @@ namespace J2P12_CS_Intermediate_MonoGame
 
             // TODO: Add your drawing code here
 
+            // Draw all of the sprites
             _spriteBatch.Begin();
             player.Draw();
             enemy.DrawEnemy();
             coll.DrawHitboxes(_spriteBatch, bullet);
 
-
-
-            // Debug to draw the hitboxes
-         //   _spriteBatch.Draw(rectangleTexture, new Rectangle((int)35, (int)player.playerPosition.Y - 30, player.playerTexture.Width / 20, player.playerTexture.Height / 20), Color.Red);
-        //    _spriteBatch.Draw(rectangleTexture2, new Rectangle((int)bullet.bulletPosition.X, (int)bullet.bulletPosition.Y, bullet.bulletTexture.Width / 25, bullet.bulletTexture.Height / 25), Color.Red);
-
-
-
-
-
             foreach (Bullet bullet in bullets)
             {
                 bullet.Draw(_spriteBatch);
             }
+            // Score text + drawing
             playerScoreString = playerScore.ToString();
             Vector2 textMidPoint = font.MeasureString(playerScoreString) / 2;
             Vector2 textPos = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height * 0.05f);
