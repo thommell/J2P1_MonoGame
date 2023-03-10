@@ -37,6 +37,13 @@
 /processorParam:TextureFormat=Color
 /build:enemy_ghost.png
 
+#begin font2.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font2.spritefont
+
 #begin playerImageRed.png
 /importer:TextureImporter
 /processor:TextureProcessor

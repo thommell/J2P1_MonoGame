@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace J2P12_CS_Intermediate_MonoGame
 
         public int enemyHealth = 10;
         public Texture2D enemyTexture;
+        
         public Vector2 enemyPosition;
         public float enemyPosY = 200;
         public float enemySpeed = 5;
@@ -34,7 +36,6 @@ namespace J2P12_CS_Intermediate_MonoGame
             {
                 sb.Draw(enemyTexture, enemyPosition, null, Color.White, 0f, new Vector2(player.playerTexture.Width / 2, player.playerTexture.Height / 2), player.imageScale, SpriteEffects.None, 0f);
             }
-            
         }
 
         public void EnemyMovement(GameTime gameTime, Rectangle enemyColl)
@@ -43,7 +44,7 @@ namespace J2P12_CS_Intermediate_MonoGame
             int randomNumber = rng.Next(100, 700);
             enemyPosition = new Vector2(700, enemyPosY);
             enemyColl.Y = (int)enemyPosY;
-            
+
             switch (enemyInfo)
             {
                 case "up":
@@ -63,11 +64,14 @@ namespace J2P12_CS_Intermediate_MonoGame
             }
 
         }
-        public void CreateNewEnemy()
+        public void CreateNewEnemy(bool enemySpawn, Texture2D enemyTex)
         {
-            System.Threading.Thread.Sleep(1250);
-
-
+            if (enemySpawn)
+            {
+                enemySpawn = false;
+                Debug.WriteLine("new enemy");
+                enemyTexture = enemyTex;
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Transactions;
 
 namespace J2P12_CS_Intermediate_MonoGame
 {
@@ -20,7 +21,13 @@ namespace J2P12_CS_Intermediate_MonoGame
         public List<Bullet> bullets = new List<Bullet>();
         public List<Bullet> bulletsToRemove = new List<Bullet>();
         private float shootingCooldown = 0f;
+        private float spawnCooldown = 1f;
         public Rectangle enemyCollider;
+        public bool timerCheck = false;
+        public bool enemySpawn = false;
+        public int playerScore = 0;
+        public string playerScoreString;
+        SpriteFont font;
 
 
 
@@ -56,6 +63,8 @@ namespace J2P12_CS_Intermediate_MonoGame
             enemy.sb = _spriteBatch;
             enemy.enemyTexture = Content.Load<Texture2D>("enemy_ghost");
 
+            font = Content.Load<SpriteFont>("font2");
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -67,7 +76,18 @@ namespace J2P12_CS_Intermediate_MonoGame
             coll.CollisionCheck(gameTime, bullets, enemy.enemyTexture);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             shootingCooldown -= deltaTime;
-
+            
+            if (timerCheck)
+            {
+                spawnCooldown -= deltaTime;
+                if (spawnCooldown <= 0f)
+                {
+                    timerCheck = false;
+                    enemySpawn = true;
+                    spawnCooldown = 1f;
+                    enemy.CreateNewEnemy(enemySpawn, Content.Load<Texture2D>("enemy_ghost"));
+                }
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && shootingCooldown <= 0f)
             {
                 shootingCooldown = 0.5f;
@@ -92,10 +112,12 @@ namespace J2P12_CS_Intermediate_MonoGame
 
                 if(bulletRectangle.Intersects(enemyCollider))
                 {
+                    timerCheck = true;
                     Debug.WriteLine("yo");
                     enemy.enemyTexture = null;
                     enemyCollider = new Rectangle(0, 0, 0, 0);
-                    enemy.CreateNewEnemy();
+                    playerScore++;
+                    
                 }
 
             }
@@ -129,6 +151,10 @@ namespace J2P12_CS_Intermediate_MonoGame
             {
                 bullet.Draw(_spriteBatch);
             }
+            playerScoreString = playerScore.ToString();
+            Vector2 textMidPoint = font.MeasureString(playerScoreString) / 2;
+            Vector2 textPos = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
+            _spriteBatch.DrawString(font, playerScoreString, textPos, Color.White, 0, textMidPoint, 1.0f, SpriteEffects.None, 0.5f);
 
             _spriteBatch.End();
             base.Draw(gameTime);
